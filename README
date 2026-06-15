@@ -1,438 +1,136 @@
 # 📦 Feedback Board (Fullstack Project)
 
-A simple fullstack feedback management system built with Node.js, Express, Prisma, PostgreSQL and Vanilla JS. Includes authentication, admin dashboard, and feedback status management.
+A simple, lightweight fullstack feedback management system. Users can submit their feedback, and administrators can manage, search, and update the status of the feedback via a protected dashboard.
+
+## 🚀 Features
+
+- **User Side:** Submit feedback (title & message) via a simple UI form.
+- **Admin Side:** 
+  - JWT Authentication login.
+  - View, search, and filter feedbacks by status.
+  - Pagination (page/limit).
+  - Update feedback status (`SUBMITTED`, `IN_REVIEW`, `RESOLVED`).
+
+## 🧱 Tech Stack
+
+- **Backend:** Node.js, Express.js, JWT, Joi (Validation)
+- **Database & ORM:** PostgreSQL, Prisma ORM
+- **Frontend:** Vanilla JavaScript, TailwindCSS, HTML
+- **Infrastructure:** Docker & Docker Compose
 
 ---
 
-# 🚀 Features
+## 🛠️ Installation & Setup
 
-## 👤 User Side
-- Submit feedback (title + message)
-- Simple UI form
+### 1. Environment Variables
+Create a `.env` file in the root directory:
+```env
+# For Local Development
+# DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feedbackdb"
 
-## 🛠 Admin Side
-- JWT authentication login
-- View all feedbacks
-- Search feedbacks
-- Filter by status
-- Pagination (page/limit)
-- Update feedback status:
-  - SUBMITTED
-  - IN_REVIEW
-  - RESOLVED
-
----
-
-# 🧱 Tech Stack
-
-- Node.js
-- Express.js
-- PostgreSQL
-- Prisma ORM
-- JWT Authentication
-- Joi Validation
-- Vanilla JavaScript
-- TailwindCSS
-- Docker
-
----
-
-# 📁 Project Structure
-
-src/
- ├── app.js
- ├── seed.js
- ├── routes/
- ├── controllers/
- ├── middleware/
- ├── validations/
- ├── services/
- ├── utils/
- ├── db/
-
-
-public/
- ├── login.html
- ├── admin.html
- ├── index.html
- ├── js/
-
-
-postman/
- ├── feedback-board.postman_collection
----
-
-# ⚙️ Environment Variables
-
-Create `.env` file:
-
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feedbackdb"
-JWT_SECRET="your_secret_key"
-PORT=3001
-
-Docker environment:
-
+# For Docker
 DATABASE_URL="postgresql://postgres:postgres@feedback-db:5432/feedbackdb"
 
----
-
-# 🛠 Installation & Setup
-
-## 1. Install dependencies
-
-```bash
-npm install
-```
-
----
-
-## 2. Configure environment variables
-
-Create a `.env` file:
-
-```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feedbackdb"
 JWT_SECRET="your_secret_key"
 PORT=3001
-```
 
----
-
-## 3. Run with Docker
-
-Build and start containers:
-
+### 2. Run with Docker (Recommended)
+Build the containers and run the database migrations and seed script:
 ```bash
-docker compose up --build
-```
-
-Or run in background:
-
-```bash
-docker compose up -d
-```
-
----
-
-## 4. Run Prisma migrations
-
-After containers are up, execute:
-
-```bash
+docker compose up -d --build
 docker exec -it feedback-backend npx prisma migrate dev --name init
-```
-
----
-
-## 5. Generate Prisma Client
-
-```bash
-docker exec -it feedback-backend npx prisma generate
-```
-
----
-
-## 6. Seed admin user
-
-```bash
 docker exec -it feedback-backend node src/seed.js
 ```
+*Note: The seed script creates the default admin user (`username: admin` | `password: 1234`).*
 
-This creates the default admin account:
-
-- username: `admin`
-- password: `1234`
-
----
-
-## 7. Start the application
-
-Development mode:
-
+### 3. Run Locally (Without Docker)
 ```bash
+npm install
+npx prisma migrate dev --name init
+node src/seed.js
 npm run dev
 ```
 
-Production mode:
+---
 
-```bash
-npm start
-```
+## 🌐 Application URLs
+
+Once the application is running, you can access the following pages:
+
+| Page | URL | Credentials / Notes |
+|------|-----|---------------------|
+| **User Feedback** | `http://localhost:3001/` | Public |
+| **Admin Login** | `http://localhost:3001/login.html` | `admin` / `1234` |
+| **Admin Dashboard** | `http://localhost:3001/admin.html` | Requires Login |
 
 ---
 
----
+## 📬 API Reference
 
-## Docker useful commands
-Show running containers:
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/auth/login` | Admin login | No |
+| `POST` | `/feedback` | Submit new feedback | No |
+| `GET` | `/feedback/admin/feedbacks` | Get all feedbacks | **Yes** (Bearer Token) |
+| `PATCH` | `/feedback/admin/feedbacks/:id` | Update status | **Yes** (Bearer Token) |
 
-```bash
-docker compose ps
-```
-
-Open a shell inside backend container:
-
-```bash
-docker exec -it feedback-backend sh
-```
-
-View logs:
-
-```bash
-docker logs feedback-backend
-```
+*A Postman collection (`feedback-board.postman_collection`) is included in the `postman/` folder.*
 
 ---
 
-# ⚠️ Troubleshooting
+## 📁 Project Structure
 
-If you encounter database-related errors or HTTP 500 responses, run:
-
-```bash
-docker exec -it feedback-backend npx prisma migrate dev --name init
-
-docker exec -it feedback-backend npx prisma generate
-
-node src/seed.js
-```
-
-These commands will:
-
-1. Apply database migrations.
-2. Generate Prisma Client.
-3. Create the default admin user.
-
-
-# 🌐 Browser URLs
-
-After starting the application, open the following URLs in your browser:
-
-## User Feedback Page
-
-Submit feedback as a normal user:
-
-```
-http://localhost:3001/
-```
+text
+├── src/
+│   ├── app.js, seed.js
+│   ├── routes/, controllers/, middleware/, validations/, services/, utils/, db/
+├── public/
+│   ├── index.html, login.html, admin.html, js/
+├── postman/
+└── docker-compose.yml
 
 ---
 
-## Admin Login Page
+## ⚠️ Troubleshooting & Common Issues
 
-Login with admin credentials:
-
-```
-http://localhost:3001/login.html
-```
-
-Default credentials:
-
-```
-username: admin
-password: 1234
-```
+- **500 Internal Server Error / DB Issues:** 
+  Ensure your database is synced and generated. Run:
+  `npx prisma db push`, `npx prisma generate`, and `node src/seed.js` (inside the docker container if using Docker).
+- **Cannot update status on Frontend:** 
+  Check if the `updateStatus` function is globally available in your JS file and the JWT token is present in `localStorage`.
 
 ---
 
-## Admin Dashboard
-
-After successful login, you will be redirected automatically to:
-
-```
-http://localhost:3001/admin.html
-```
+## 🧠 Design Decisions & Notes
+- **Express & Vanilla JS:** Chosen for simplicity and lightweight architecture.
+- **Prisma + PostgreSQL:** Provides type-safe database access and reliable relational data management.
+- **JWT:** Stateless authentication mechanism for protecting admin routes.
+- **Future Improvements:** Swagger documentation, Rate limiting, Auto-seed on Docker startup, and migrating the frontend to React/Vue.
 
 ---
 
-## API Base URL
+## 📷 Screenshots
 
-```
-http://localhost:3001
-```
+<details>
+<summary>Click to view screenshots</summary>
 
----
+- **Home Page:** ![Home Page](screenshots/home-page.png)
+- **Login Page:** ![Login](screenshots/login-page.png)
+- **Admin Dashboard:** ![Dashboard](screenshots/admin-dashboard.png)
+- **Search & Filter:** ![Search](screenshots/search.png) | ![Filter](screenshots/filter.png)
+- **Update Status:** ![Update Status](screenshots/update-status.png)
 
-## Protected Admin API
+</details>
 
-```
-GET    /feedback/admin/feedbacks
-PATCH  /feedback/admin/feedbacks/:id
-```
 
-These endpoints require:
+## 🧠 Architecture & Design Decisions
 
-```
-Authorization: Bearer <token>
-```
+Here is a breakdown of the core technologies chosen for this project and the reasoning behind them:
 
+- **Express.js:** Selected for its lightweight and flexible nature, allowing for rapid REST API development without unnecessary overhead for this specific use case.
+- **Prisma ORM:** Chosen for its type-safe database access, intuitive schema definition, and straightforward migration system, which significantly improves the developer experience.
+- **PostgreSQL:** A highly reliable, open-source relational database that is robust and widely used in production environments, making it perfect for structured feedback data.
+- **JWT (JSON Web Tokens):** Implemented to provide a stateless authentication mechanism. It eliminates the need for server-side session storage, making the API simpler and more scalable.
+- **Joi Validation:** Used at the middleware level to validate incoming request payloads. This ensures data integrity and prevents invalid data from ever reaching the controllers.
+- **Docker:** Utilized to containerize the application and database, ensuring consistent behavior across different environments and drastically simplifying the setup process.
 
-
-# 📬 API Endpoints
-
-## Auth
-POST /auth/login
-
-## User Feedback
-POST /feedback
-
-## Admin (Protected)
-GET /feedback/admin/feedbacks
-PATCH /feedback/admin/feedbacks/:id
-
-Headers:
-Authorization: Bearer <token>
-
----
-
-# 📦 Postman
-
-- Postman collection is included
-- Base URL:
-http://localhost:3001
-
-No environment variables used in Postman.
-
----
-
-# 🔐 Authentication Flow
-
-1. User logs in via /auth/login
-2. Token saved in localStorage
-3. Token sent in Authorization header
-4. Backend middleware validates token
-5. Admin routes are protected
-
----
-
-# ⚠️ Important Notes
-
-## Prisma + Docker Issue Fix
-
-If you get 500 errors:
-
-npx prisma db push
-npx prisma generate
-node prisma/seed.js
-
----
-
-# 📷 Screenshots
-
-## Home Page
-
-![Home Page](screenshots/home-page.png)
-
----
-
-## Login Page
-
-![Login](screenshots/login-page.png)
-
----
-
-## Admin Dashboard
-
-![Dashboard](screenshots/admin-dashboard.png)
-
----
-
-## Search 
-
-![Search ](screenshots/search.png)
-
----
-
-## Filter 
-
-![Filter](screenshots/filter.png)
-
----
-
-## Update Feedback Status
-
-![Update Status](screenshots/update-status.png)
-
----
-
-
-# 🧠 Design Decisions
-
-## Why Express?
-
-Express was chosen because it provides a lightweight and flexible structure for building REST APIs while keeping the project simple.
-
----
-
-## Why Prisma?
-
-Prisma was selected as the ORM because:
-
-- Type-safe database access
-- Easy schema management
-- Simple migrations
-- Better developer experience
-
----
-
-## Why PostgreSQL?
-
-PostgreSQL was chosen because it is:
-
-- Reliable
-- Open-source
-- Suitable for relational data
-- Widely used in production
-
----
-
-## Why JWT Authentication?
-
-JWT provides a stateless authentication mechanism and allows protected admin routes without server-side sessions.
-
----
-
-## Why Joi Validation?
-
-Joi was used to validate incoming requests and prevent invalid data from reaching controllers.
-
----
-
-## Why Docker?
-
-Docker ensures that the application runs consistently across environments and simplifies project setup.
-
----
-
-
-
-## Common Issues
-
-### Cannot GET /feedback
-Route mismatch or missing controller
-
-### Admin cannot update status
-Frontend updateStatus function missing or not global
-
-### 500 Internal Server Error
-DB not synced or seed not executed
-
----
-
-# 🌟 Optional Improvements
-
-- Auto seed on Docker startup
-- Swagger documentation
-- Rate limiting
-- Better frontend UI (React/Vue)
-- Deployment (Render / VPS)
-
----
-
-# 👨‍💻 Author
-
-Built as a fullstack assessment project demonstrating:
-- API design
-- Database modeling
-- Authentication system
-- Frontend integration
-- Docker deployment readiness
