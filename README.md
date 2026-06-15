@@ -44,6 +44,7 @@ Build the containers and run the database migrations and seed script:
 ```bash
 docker compose up -d --build
 docker exec -it feedback-backend npx prisma migrate dev --name init
+docker exec -it feedback-backend npx prisma generate
 docker exec -it feedback-backend node src/seed.js
 ```
 
