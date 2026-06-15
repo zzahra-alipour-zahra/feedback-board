@@ -33,7 +33,7 @@ DATABASE_URL="postgresql://postgres:postgres@feedback-db:5432/feedbackdb"
 
 JWT_SECRET="your_secret_key"
 PORT=3001
-
+```
 ### 2. Run with Docker (Recommended)
 Build the containers and run the database migrations and seed script:
 ```bash
@@ -80,7 +80,7 @@ Once the application is running, you can access the following pages:
 
 ## 📁 Project Structure
 
-text
+```text
 ├── src/
 │   ├── app.js, seed.js
 │   ├── routes/, controllers/, middleware/, validations/, services/, utils/, db/
@@ -88,7 +88,7 @@ text
 │   ├── index.html, login.html, admin.html, js/
 ├── postman/
 └── docker-compose.yml
-
+```
 ---
 
 ## ⚠️ Troubleshooting & Common Issues
@@ -114,11 +114,11 @@ text
 <details>
 <summary>Click to view screenshots</summary>
 
-- **Home Page:** ![Home Page](screenshots/home-page.png)
-- **Login Page:** ![Login](screenshots/login-page.png)
-- **Admin Dashboard:** ![Dashboard](screenshots/admin-dashboard.png)
-- **Search & Filter:** ![Search](screenshots/search.png) | ![Filter](screenshots/filter.png)
-- **Update Status:** ![Update Status](screenshots/update-status.png)
+- **Home Page:** ![Home Page](./screenshots/home-page.png)
+- **Login Page:** ![Login](./screenshots/login-page.png)
+- **Admin Dashboard:** ![Dashboard](./screenshots/admin-dashboard.png)
+- **Search & Filter:** ![Search](./screenshots/search.png) | ![Filter](./screenshots/filter.png)
+- **Update Status:** ![Update Status](./screenshots/update-status.png)
 
 </details>
 
