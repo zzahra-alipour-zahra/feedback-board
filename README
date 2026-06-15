@@ -5,7 +5,7 @@ A simple, lightweight fullstack feedback management system. Users can submit the
 ## 🚀 Features
 
 - **User Side:** Submit feedback (title & message) via a simple UI form.
-- **Admin Side:** 
+- **Admin Side:**
   - JWT Authentication login.
   - View, search, and filter feedbacks by status.
   - Pagination (page/limit).
@@ -23,7 +23,9 @@ A simple, lightweight fullstack feedback management system. Users can submit the
 ## 🛠️ Installation & Setup
 
 ### 1. Environment Variables
+
 Create a `.env` file in the root directory:
+
 ```env
 # For Local Development
 # DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feedbackdb"
@@ -34,16 +36,21 @@ DATABASE_URL="postgresql://postgres:postgres@feedback-db:5432/feedbackdb"
 JWT_SECRET="your_secret_key"
 PORT=3001
 ```
+
 ### 2. Run with Docker (Recommended)
+
 Build the containers and run the database migrations and seed script:
+
 ```bash
 docker compose up -d --build
 docker exec -it feedback-backend npx prisma migrate dev --name init
 docker exec -it feedback-backend node src/seed.js
 ```
-*Note: The seed script creates the default admin user (`username: admin` | `password: 1234`).*
+
+_Note: The seed script creates the default admin user (`username: admin` | `password: 1234`)._
 
 ### 3. Run Locally (Without Docker)
+
 ```bash
 npm install
 npx prisma migrate dev --name init
@@ -57,24 +64,24 @@ npm run dev
 
 Once the application is running, you can access the following pages:
 
-| Page | URL | Credentials / Notes |
-|------|-----|---------------------|
-| **User Feedback** | `http://localhost:3001/` | Public |
-| **Admin Login** | `http://localhost:3001/login.html` | `admin` / `1234` |
-| **Admin Dashboard** | `http://localhost:3001/admin.html` | Requires Login |
+| Page                | URL                                | Credentials / Notes |
+| ------------------- | ---------------------------------- | ------------------- |
+| **User Feedback**   | `http://localhost:3001/`           | Public              |
+| **Admin Login**     | `http://localhost:3001/login.html` | `admin` / `1234`    |
+| **Admin Dashboard** | `http://localhost:3001/admin.html` | Requires Login      |
 
 ---
 
 ## 📬 API Reference
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `POST` | `/auth/login` | Admin login | No |
-| `POST` | `/feedback` | Submit new feedback | No |
-| `GET` | `/feedback/admin/feedbacks` | Get all feedbacks | **Yes** (Bearer Token) |
-| `PATCH` | `/feedback/admin/feedbacks/:id` | Update status | **Yes** (Bearer Token) |
+| Method  | Endpoint                        | Description         | Auth Required          |
+| ------- | ------------------------------- | ------------------- | ---------------------- |
+| `POST`  | `/auth/login`                   | Admin login         | No                     |
+| `POST`  | `/feedback`                     | Submit new feedback | No                     |
+| `GET`   | `/feedback/admin/feedbacks`     | Get all feedbacks   | **Yes** (Bearer Token) |
+| `PATCH` | `/feedback/admin/feedbacks/:id` | Update status       | **Yes** (Bearer Token) |
 
-*A Postman collection (`feedback-board.postman_collection`) is included in the `postman/` folder.*
+_A Postman collection (`feedback-board.postman_collection`) is included in the `postman/` folder._
 
 ---
 
@@ -89,19 +96,21 @@ Once the application is running, you can access the following pages:
 ├── postman/
 └── docker-compose.yml
 ```
+
 ---
 
 ## ⚠️ Troubleshooting & Common Issues
 
-- **500 Internal Server Error / DB Issues:** 
+- **500 Internal Server Error / DB Issues:**
   Ensure your database is synced and generated. Run:
   `npx prisma db push`, `npx prisma generate`, and `node src/seed.js` (inside the docker container if using Docker).
-- **Cannot update status on Frontend:** 
+- **Cannot update status on Frontend:**
   Check if the `updateStatus` function is globally available in your JS file and the JWT token is present in `localStorage`.
 
 ---
 
 ## 🧠 Design Decisions & Notes
+
 - **Express & Vanilla JS:** Chosen for simplicity and lightweight architecture.
 - **Prisma + PostgreSQL:** Provides type-safe database access and reliable relational data management.
 - **JWT:** Stateless authentication mechanism for protecting admin routes.
@@ -111,17 +120,29 @@ Once the application is running, you can access the following pages:
 
 ## 📷 Screenshots
 
-<details>
-<summary>Click to view screenshots</summary>
+### Home Page
 
-- **Home Page:** ![Home Page](./screenshots/home-page.png)
-- **Login Page:** ![Login](./screenshots/login-page.png)
-- **Admin Dashboard:** ![Dashboard](./screenshots/admin-dashboard.png)
-- **Search & Filter:** ![Search](./screenshots/search.png) | ![Filter](./screenshots/filter.png)
-- **Update Status:** ![Update Status](./screenshots/update-status.png)
+![Home Page](./screenshots/home-page.png)
 
-</details>
+### Login Page
 
+![Login Page](./screenshots/login-page.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](./screenshots/admin-dashboard.png)
+
+### Search
+
+![Search](./screenshots/search.png)
+
+### Filter
+
+![Search](./screenshots/filter.png)
+
+### Update Status
+
+![Update Status](./screenshots/update-status.png)
 
 ## 🧠 Architecture & Design Decisions
 
@@ -133,4 +154,3 @@ Here is a breakdown of the core technologies chosen for this project and the rea
 - **JWT (JSON Web Tokens):** Implemented to provide a stateless authentication mechanism. It eliminates the need for server-side session storage, making the API simpler and more scalable.
 - **Joi Validation:** Used at the middleware level to validate incoming request payloads. This ensures data integrity and prevents invalid data from ever reaching the controllers.
 - **Docker:** Utilized to containerize the application and database, ensuring consistent behavior across different environments and drastically simplifying the setup process.
-
