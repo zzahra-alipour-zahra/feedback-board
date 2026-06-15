@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Feedback Board</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-blue-50 flex items-center justify-center h-screen">
+
+  <div class="bg-white shadow-lg rounded-xl p-8 w-96">
+
+    <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">
+      Send Feedback
+    </h1>
+
+    <input
+      id="title"
+      type="text"
+      placeholder="Title"
+      class="w-full mb-3 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+
+    <textarea
+      id="message"
+      placeholder="Message"
+      rows="4"
+      class="w-full mb-4 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+    ></textarea>
+
+    <button
+      onclick="submitFeedback()"
+      class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded transition"
+    >
+      Submit
+    </button>
+
+    <p id="result" class="text-center text-sm mt-3"></p>
+
+  </div>
+
+  <script src="./js/index.js"></script>
+</body>
+</html>

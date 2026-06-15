@@ -1,0 +1,438 @@
+# 📦 Feedback Board (Fullstack Project)
+
+A simple fullstack feedback management system built with Node.js, Express, Prisma, PostgreSQL and Vanilla JS. Includes authentication, admin dashboard, and feedback status management.
+
+---
+
+# 🚀 Features
+
+## 👤 User Side
+- Submit feedback (title + message)
+- Simple UI form
+
+## 🛠 Admin Side
+- JWT authentication login
+- View all feedbacks
+- Search feedbacks
+- Filter by status
+- Pagination (page/limit)
+- Update feedback status:
+  - SUBMITTED
+  - IN_REVIEW
+  - RESOLVED
+
+---
+
+# 🧱 Tech Stack
+
+- Node.js
+- Express.js
+- PostgreSQL
+- Prisma ORM
+- JWT Authentication
+- Joi Validation
+- Vanilla JavaScript
+- TailwindCSS
+- Docker
+
+---
+
+# 📁 Project Structure
+
+src/
+ ├── app.js
+ ├── seed.js
+ ├── routes/
+ ├── controllers/
+ ├── middleware/
+ ├── validations/
+ ├── services/
+ ├── utils/
+ ├── db/
+
+
+public/
+ ├── login.html
+ ├── admin.html
+ ├── index.html
+ ├── js/
+
+
+postman/
+ ├── feedback-board.postman_collection
+---
+
+# ⚙️ Environment Variables
+
+Create `.env` file:
+
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feedbackdb"
+JWT_SECRET="your_secret_key"
+PORT=3001
+
+Docker environment:
+
+DATABASE_URL="postgresql://postgres:postgres@feedback-db:5432/feedbackdb"
+
+---
+
+# 🛠 Installation & Setup
+
+## 1. Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+## 2. Configure environment variables
+
+Create a `.env` file:
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feedbackdb"
+JWT_SECRET="your_secret_key"
+PORT=3001
+```
+
+---
+
+## 3. Run with Docker
+
+Build and start containers:
+
+```bash
+docker compose up --build
+```
+
+Or run in background:
+
+```bash
+docker compose up -d
+```
+
+---
+
+## 4. Run Prisma migrations
+
+After containers are up, execute:
+
+```bash
+docker exec -it feedback-backend npx prisma migrate dev --name init
+```
+
+---
+
+## 5. Generate Prisma Client
+
+```bash
+docker exec -it feedback-backend npx prisma generate
+```
+
+---
+
+## 6. Seed admin user
+
+```bash
+docker exec -it feedback-backend node src/seed.js
+```
+
+This creates the default admin account:
+
+- username: `admin`
+- password: `1234`
+
+---
+
+## 7. Start the application
+
+Development mode:
+
+```bash
+npm run dev
+```
+
+Production mode:
+
+```bash
+npm start
+```
+
+---
+
+---
+
+## Docker useful commands
+Show running containers:
+
+```bash
+docker compose ps
+```
+
+Open a shell inside backend container:
+
+```bash
+docker exec -it feedback-backend sh
+```
+
+View logs:
+
+```bash
+docker logs feedback-backend
+```
+
+---
+
+# ⚠️ Troubleshooting
+
+If you encounter database-related errors or HTTP 500 responses, run:
+
+```bash
+docker exec -it feedback-backend npx prisma migrate dev --name init
+
+docker exec -it feedback-backend npx prisma generate
+
+node src/seed.js
+```
+
+These commands will:
+
+1. Apply database migrations.
+2. Generate Prisma Client.
+3. Create the default admin user.
+
+
+# 🌐 Browser URLs
+
+After starting the application, open the following URLs in your browser:
+
+## User Feedback Page
+
+Submit feedback as a normal user:
+
+```
+http://localhost:3001/
+```
+
+---
+
+## Admin Login Page
+
+Login with admin credentials:
+
+```
+http://localhost:3001/login.html
+```
+
+Default credentials:
+
+```
+username: admin
+password: 1234
+```
+
+---
+
+## Admin Dashboard
+
+After successful login, you will be redirected automatically to:
+
+```
+http://localhost:3001/admin.html
+```
+
+---
+
+## API Base URL
+
+```
+http://localhost:3001
+```
+
+---
+
+## Protected Admin API
+
+```
+GET    /feedback/admin/feedbacks
+PATCH  /feedback/admin/feedbacks/:id
+```
+
+These endpoints require:
+
+```
+Authorization: Bearer <token>
+```
+
+
+
+# 📬 API Endpoints
+
+## Auth
+POST /auth/login
+
+## User Feedback
+POST /feedback
+
+## Admin (Protected)
+GET /feedback/admin/feedbacks
+PATCH /feedback/admin/feedbacks/:id
+
+Headers:
+Authorization: Bearer <token>
+
+---
+
+# 📦 Postman
+
+- Postman collection is included
+- Base URL:
+http://localhost:3001
+
+No environment variables used in Postman.
+
+---
+
+# 🔐 Authentication Flow
+
+1. User logs in via /auth/login
+2. Token saved in localStorage
+3. Token sent in Authorization header
+4. Backend middleware validates token
+5. Admin routes are protected
+
+---
+
+# ⚠️ Important Notes
+
+## Prisma + Docker Issue Fix
+
+If you get 500 errors:
+
+npx prisma db push
+npx prisma generate
+node prisma/seed.js
+
+---
+
+# 📷 Screenshots
+
+## Home Page
+
+![Home Page](screenshots/home-page.png)
+
+---
+
+## Login Page
+
+![Login](screenshots/login-page.png)
+
+---
+
+## Admin Dashboard
+
+![Dashboard](screenshots/admin-dashboard.png)
+
+---
+
+## Search 
+
+![Search ](screenshots/search.png)
+
+---
+
+## Filter 
+
+![Filter](screenshots/filter.png)
+
+---
+
+## Update Feedback Status
+
+![Update Status](screenshots/update-status.png)
+
+---
+
+
+# 🧠 Design Decisions
+
+## Why Express?
+
+Express was chosen because it provides a lightweight and flexible structure for building REST APIs while keeping the project simple.
+
+---
+
+## Why Prisma?
+
+Prisma was selected as the ORM because:
+
+- Type-safe database access
+- Easy schema management
+- Simple migrations
+- Better developer experience
+
+---
+
+## Why PostgreSQL?
+
+PostgreSQL was chosen because it is:
+
+- Reliable
+- Open-source
+- Suitable for relational data
+- Widely used in production
+
+---
+
+## Why JWT Authentication?
+
+JWT provides a stateless authentication mechanism and allows protected admin routes without server-side sessions.
+
+---
+
+## Why Joi Validation?
+
+Joi was used to validate incoming requests and prevent invalid data from reaching controllers.
+
+---
+
+## Why Docker?
+
+Docker ensures that the application runs consistently across environments and simplifies project setup.
+
+---
+
+
+
+## Common Issues
+
+### Cannot GET /feedback
+Route mismatch or missing controller
+
+### Admin cannot update status
+Frontend updateStatus function missing or not global
+
+### 500 Internal Server Error
+DB not synced or seed not executed
+
+---
+
+# 🌟 Optional Improvements
+
+- Auto seed on Docker startup
+- Swagger documentation
+- Rate limiting
+- Better frontend UI (React/Vue)
+- Deployment (Render / VPS)
+
+---
+
+# 👨‍💻 Author
+
+Built as a fullstack assessment project demonstrating:
+- API design
+- Database modeling
+- Authentication system
+- Frontend integration
+- Docker deployment readiness

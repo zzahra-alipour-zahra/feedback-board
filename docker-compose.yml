@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+
+  backend:
+    build: .
+    container_name: feedback-backend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/feedbackdb
+      JWT_SECRET: supersecretkey
+      PORT: 3001
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  db:
+    image: postgres:15
+    container_name: feedback-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: feedbackdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
